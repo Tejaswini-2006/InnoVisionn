@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamePlan: Smart Borrowing for Big Dreams</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --gray: #6c757d;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(67, 97, 238, 0.9), rgba(58, 12, 163, 0.9)), url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .main-content {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+        }
+
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .input-with-icon input {
+            padding-left: 35px;
+        }
+
+        .results {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .result-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-card .amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chatbot-toggle {
+            background: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+        }
+
+        .chatbot-header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            background: #f1f1f1;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+
+        .loan-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 3rem;
+        }
+
+        .loan-type-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .loan-type-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .loan-type-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .reminder-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .reminder-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--success);
+        }
+
+        .copyright {
+            padding-top: 1rem;
+            border-top: 1px solid #444;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background-color: #f8f9fa;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            padding: 2rem;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: var(--secondary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .loan-details-modal {
+            max-width: 750px;
+        }
+
+        .loan-details-container {
+            /* Flex container for the two main content sections */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .loan-details-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .loan-details-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loan-feature {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .loan-feature i {
+            color: var(--success);
+            margin-right: 10px;
+            font-size: 1.2rem;
+            padding-top: 3px;
+        }
+
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* STYLES FOR VISUAL ALERTS */
+        .alert-box {
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .alert-box.red {
+            background-color: #ffe0e0;
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .alert-box.green {
+            background-color: #e0fff0;
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .alert-box.primary {
+            background-color: #e0e7ff;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        /* NEW STYLE FOR SUCCESS METRICS */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 3rem;
+        }
+
+        .metric-card {
+            background: white;
+            border-left: 5px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .metric-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .metric-card .label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* NEW STYLE FOR BANK COMPARISON TABLE IN MODAL */
+        .bank-comparison-container {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .bank-comparison-container h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .bank-comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .bank-comparison-table th,
+        .bank-comparison-table td {
+            padding: 10px;
+            border: 1px solid #f1f1f1;
+            text-align: center;
+        }
+
+        .bank-comparison-table th {
+            background-color: var(--light);
+            font-weight: 600;
+        }
+
+        .bank-comparison-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .bank-comparison-table .best-rate {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .bank-comparison-table .least-fee {
+            color: var(--primary);
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-piggy-bank"></i>
+                    <span>GamePlan</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#calculator">Loan Calculator</a></li>
+                        <li><a href="#comparison">Compare Loans</a></li>
+                        <li><a href="#types">Loan Types</a></li>
+                        <li><a href="#reminders">Reminders</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn btn-outline" id="loginBtn">Login</button>
+                    <button class="btn btn-primary" id="registerBtn">Register</button>
+                </div>
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                    <button class="btn btn-outline" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h3>Smart Borrowing for Big Dreams</h3>
+            <h1>We don’t just show numbers—we show possibilities</h1>
+            <p>Compare loans, calculate repayments, and make informed financial decisions with our intuitive loan comparison platform.</p>
+            <button class="btn btn-primary" id="getStartedBtn">Get Started</button>
+        </div>
+    </section>
+
+    <div class="main-content container">
+        <section id="calculator">
+            <h2 class="section-title">Loan Calculator</h2>
+            <div class="calculator-container">
+                <div class="calculator-card">
+                    <h3>Original Loan</h3>
+                    <div class="form-group">
+                        <label for="loanAmount">Loan Amount (₹)</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-rupee-sign"></i>
+                            <input type="number" id="loanAmount" placeholder="Enter loan amount" value="500000" min="1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="interestRate">Interest Rate (%)</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-percentage"></i>
+                            <input type="number" id="interestRate" placeholder="Enter interest rate" value="8.5" step="0.1" min="0.1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loanTerm">Loan Term (months)</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                            <input type="number" id="loanTerm" placeholder="Enter loan term" value="60" min="1">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="calculateBtn">Calculate</button>
+                    <div class="alert-box red" id="originalCostAlert">
+                        Total Interest: ₹1,15,900
+                    </div>
+                </div>
+
+                <div class="calculator-card">
+                    <h3>Refinancing Loan</h3>
+                    <div class="form-group">
+                        <label for="refinanceAmount">Loan Amount (₹)</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-rupee-sign"></i>
+                            <input type="number" id="refinanceAmount" placeholder="Enter loan amount" value="480000" min="1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="refinanceRate">Interest Rate (%)</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-percentage"></i>
+                            <input type="number" id="refinanceRate" placeholder="Enter interest rate" value="7.2" step="0.1" min="0.1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="refinanceTerm">Loan Term (months)</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                            <input type="number" id="refinanceTerm" placeholder="Enter loan term" value="48" min="1">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="compareBtn">Compare Loans</button>
+                    <div class="alert-box green" id="refinanceSavingsAlert">
+                        Potential Savings: ₹43,804 (Total Interest)
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">Community Success Metrics</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="value" id="peopleTookLoan">12,500+</div>
+                    <div class="label">Total Users Who Took a Loan</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value" id="peopleClearedLoan">8,900+</div>
+                    <div class="label">Loans Successfully Cleared</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value" id="peopleDefaultedLoan">5%</div>
+                    <div class="label">Default Rate (Below National Avg.)</div>
+                </div>
+            </div>
+            <div class="results" id="comparison">
+                <h3 class="section-title">Loan Comparison Results</h3>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h3>Monthly Payment</h3>
+                        <div class="amount" id="originalMonthlyPayment">₹10,265</div>
+                        <p>Original Loan</p>
+                    </div>
+                    <div class="result-card">
+                        <h3>Monthly Payment</h3>
+                        <div class="amount" id="refinanceMonthlyPayment">₹11,502</div>
+                        <p>Refinancing Loan</p>
+                    </div>
+                    <div class="result-card">
+                        <h3>Total Interest</h3>
+                        <div class="amount" id="originalTotalInterest">₹1,15,900</div>
+                        <p>Original Loan</p>
+                    </div>
+                    <div class="result-card">
+                        <h3>Total Interest</h3>
+                        <div class="amount" id="refinanceTotalInterest">₹72,096</div>
+                        <p>Refinancing Loan</p>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>Money Map - Original Loan</h3>
+                        <canvas id="originalChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Money Map - Refinancing Loan</h3>
+                        <canvas id="refinanceChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" data-tab="original">Original Loan Schedule</div>
+                    <div class="tab" data-tab="refinance">Refinancing Loan Schedule</div>
+                </div>
+
+                <div class="tab-content active" id="originalContent">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Payment</th>
+                                <th>Principal</th>
+                                <th>Interest</th>
+                                <th>Remaining Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="originalSchedule">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tab-content" id="refinanceContent">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Payment</th>
+                                <th>Principal</th>
+                                <th>Interest</th>
+                                <th>Remaining Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="refinanceSchedule">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="types">
+            <h2 class="section-title">Which Loan is Best for You?</h2>
+            <div class="loan-types">
+                <div class="loan-type-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Education Loan</h3>
+                    <p>Low interest rates with flexible repayment options for students.</p>
+                    <button class="btn btn-primary learn-more-btn" data-loan="education">Learn More</button>
+                </div>
+                <div class="loan-type-card">
+                    <i class="fas fa-home"></i>
+                    <h3>Home Loan</h3>
+                    <p>Long-term financing for your dream home with tax benefits.</p>
+                    <button class="btn btn-primary learn-more-btn" data-loan="home">Learn More</button>
+                </div>
+                <div class="loan-type-card">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>Personal Loan</h3>
+                    <p>Quick funds for various personal needs without collateral.</p>
+                    <button class="btn btn-primary learn-more-btn" data-loan="personal">Learn More</button>
+                </div>
+                <div class="loan-type-card">
+                    <i class="fas fa-car"></i>
+                    <h3>Car Loan</h3>
+                    <p>Special offers and low EMIs for new and used vehicles.</p>
+                    <button class="btn btn-primary learn-more-btn" data-loan="car">Learn More</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="reminders">
+            <h2 class="section-title">Payment Reminders</h2>
+            <div class="reminder-section">
+                <div class="reminder-item">
+                    <div>
+                        <h4>Education Loan Payment</h4>
+                        <p>Due Date: 15th of every month</p>
+                    </div>
+                    <div>
+                        <span id="eduLoanAmount">₹12,500</span>
+                        <button class="btn btn-primary set-reminder-btn" data-loan="Education Loan" data-amount="12,500">Set Reminder</button>
+                    </div>
+                </div>
+                <div class="reminder-item">
+                    <div>
+                        <h4>Car Loan Payment</h4>
+                        <p>Due Date: 5th of every month</p>
+                    </div>
+                    <div>
+                        <span id="carLoanAmount">₹8,300</span>
+                        <button class="btn btn-primary set-reminder-btn" data-loan="Car Loan" data-amount="8,300">Set Reminder</button>
+                    </div>
+                </div>
+                <div class="reminder-item">
+                    <div>
+                        <h4>Home Loan Payment</h4>
+                        <p>Due Date: 1st of every month</p>
+                    </div>
+                    <div>
+                        <span id="homeLoanAmount">₹25,700</span>
+                        <button class="btn btn-primary set-reminder-btn" data-loan="Home Loan" data-amount="25,700">Set Reminder</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="chatbot-container">
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <h3>Loan Assistant</h3>
+                <i class="fas fa-times" id="closeChatbot" style="cursor: pointer;"></i>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot-message">
+                    Hello! I'm your Loan Assistant. Ask me about **'Education Loan'**, **'refinancing'**, or **'EMI calculation'**.
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatInput" placeholder="Type your message...">
+                <button class="btn btn-primary" id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        Reminder: Your loan payment of ₹12,500 is due in 3 days.
+    </div>
+
+    <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="loginModalTitle">Login to GamePlan</h2>
+                <button class="close-modal" aria-label="Close Login Modal">&times;</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required aria-required="true">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+            <div class="modal-footer">
+                <p>Don't have an account? <a href="#" id="showRegister">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="registerModal" role="dialog" aria-modal="true" aria-labelledby="registerModalTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="registerModalTitle">Create an Account</h2>
+                <button class="close-modal" aria-label="Close Register Modal">&times;</button>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" placeholder="Enter your full name" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="Enter your email" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" placeholder="Create a password" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirm your password" required aria-required="true">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+            </form>
+            <div class="modal-footer">
+                <p>Already have an account? <a href="#" id="showLogin">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="loanDetailsModal" role="dialog" aria-modal="true" aria-labelledby="loanDetailsTitle">
+        <div class="modal-content loan-details-modal">
+            <div class="modal-header">
+                <h2 id="loanDetailsTitle">Loan Details</h2>
+                <button class="close-modal" aria-label="Close Loan Details Modal">&times;</button>
+            </div>
+            <div class="loan-details-container">
+                <div class="loan-details-content" id="loanDetailsContent">
+                </div>
+                <div class="bank-comparison-container">
+                    <h3>Compare Top Banks</h3>
+                    <table class="bank-comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Bank</th>
+                                <th>Interest Rate (Avg.)</th>
+                                <th>Processing Fee</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bankComparisonBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="applyLoanBtn">Apply for this Loan</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="agentContactModal" role="dialog" aria-modal="true" aria-labelledby="agentContactTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="agentContactTitle">Get Personal Assistance</h2>
+                <button class="close-modal" aria-label="Close Contact Modal">&times;</button>
+            </div>
+            <p>Enter your details and a dedicated **Loan Agent** will contact you within 2 hours to process your application and answer all your questions about the <span id="contactLoanType" style="font-weight: bold;"></span>.</p>
+            <form id="contactForm" style="margin-top: 15px;">
+                <div class="form-group">
+                    <label for="contactName">Your Full Name</label>
+                    <input type="text" id="contactName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactPhone">Phone Number</label>
+                    <input type="tel" id="contactPhone" placeholder="Enter your 10-digit number" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Submit & Get Call Back</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>GamePlan</h3>
+                    <p>We don’t just show numbers—we show possibilities</p>
+                    <p>Smart borrowing solutions for your financial dreams.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Email: info@gameplan.com</p>
+                    <p>Phone: +91 98765 43210</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 GamePlan. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Formatter for Indian Rupees
+        const currencyFormatter = new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        });
+
+        // Loan calculation and utility functions
+        function calculateLoan(amount, rate, term) {
+            const monthlyRate = rate / 100 / 12;
+            let monthlyPayment;
+
+            if (monthlyRate === 0) {
+                monthlyPayment = amount / term;
+            } else {
+                monthlyPayment = (amount * monthlyRate * Math.pow(1 + monthlyRate, term)) / (Math.pow(1 + monthlyRate, term) - 1);
+            }
+
+            if (!isFinite(monthlyPayment) || isNaN(monthlyPayment) || monthlyPayment <= 0) {
+                return {
+                    monthlyPayment: 0,
+                    totalPayment: amount,
+                    totalInterest: 0,
+                    schedule: []
+                };
+            }
+
+            const totalPayment = monthlyPayment * term;
+            const totalInterest = totalPayment - amount;
+
+            return {
+                monthlyPayment: monthlyPayment.toFixed(2),
+                totalPayment: totalPayment.toFixed(2),
+                totalInterest: totalInterest.toFixed(2),
+                schedule: generateSchedule(amount, monthlyRate, term, monthlyPayment)
+            };
+        }
+
+        function generateSchedule(amount, monthlyRate, term, monthlyPayment) {
+            let balance = amount;
+            const schedule = [];
+
+            for (let month = 1; month <= term; month++) {
+                const interest = balance * monthlyRate;
+                const principal = (month === term) ? balance : monthlyPayment - interest;
+                balance -= principal;
+
+                schedule.push({
+                    month: month,
+                    payment: monthlyPayment.toFixed(2),
+                    principal: principal > 0 ? principal.toFixed(2) : (monthlyPayment - interest).toFixed(2),
+                    interest: interest.toFixed(2),
+                    balance: balance > 0 ? balance.toFixed(2) : '0.00'
+                });
+            }
+
+            return schedule;
+        }
+
+        function updateCharts(originalData, refinanceData) {
+            const originalCtx = document.getElementById('originalChart').getContext('2d');
+            if (window.originalChartInstance) {
+                window.originalChartInstance.destroy();
+            }
+            window.originalChartInstance = new Chart(originalCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Principal', 'Interest'],
+                    datasets: [{
+                        data: [originalData.amount, originalData.totalInterest],
+                        backgroundColor: ['#4361ee', '#f72585']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            const refinanceCtx = document.getElementById('refinanceChart').getContext('2d');
+            if (window.refinanceChartInstance) {
+                window.refinanceChartInstance.destroy();
+            }
+            window.refinanceChartInstance = new Chart(refinanceCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Principal', 'Interest'],
+                    datasets: [{
+                        data: [refinanceData.amount, refinanceData.totalInterest],
+                        backgroundColor: ['#4361ee', '#f72585']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function populateSchedule(tableId, schedule) {
+            const tableBody = document.getElementById(tableId);
+            tableBody.innerHTML = '';
+            const displaySchedule = schedule.slice(0, 12);
+
+            displaySchedule.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.month}</td>
+                    <td>${currencyFormatter.format(item.payment).replace('₹', '₹')}</td>
+                    <td>${currencyFormatter.format(item.principal).replace('₹', '₹')}</td>
+                    <td>${currencyFormatter.format(item.interest).replace('₹', '₹')}</td>
+                    <td>${currencyFormatter.format(item.balance).replace('₹', '₹')}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            if (schedule.length > 12) {
+                const moreRow = document.createElement('tr');
+                moreRow.innerHTML = `<td colspan="5" style="text-align: center; font-style: italic; color: var(--gray);">... Showing 12 of ${schedule.length} months. Scroll for more detail. ...</td>`;
+                tableBody.appendChild(moreRow);
+            }
+        }
+
+        // --- Mock Data and Elements ---
+        const loanDetails = {
+            education: {
+                title: "Education Loan",
+                features: ["Interest rates as low as 8.5%", "Repayment period up to 15 years", "Moratorium period during study", "Tax benefits under Section 80E", "No collateral for loans up to ₹7.5 lakh"],
+                description: "Education loans are designed to help students finance their higher education in India or abroad. These loans cover tuition fees, accommodation, books, and other related expenses.",
+                banks: [{
+                        name: "Global Bank",
+                        rate: "8.4%",
+                        fee: "1.0%",
+                        rating: "4.5/5"
+                    },
+                    {
+                        name: "Study Finance Co.",
+                        rate: "8.9%",
+                        fee: "0.5%",
+                        rating: "4.2/5"
+                    },
+                    {
+                        name: "National Trust Bank",
+                        rate: "8.1%",
+                        fee: "1.5%",
+                        rating: "4.8/5",
+                        best: true
+                    }
+                ]
+            },
+            home: {
+                title: "Home Loan",
+                features: ["Interest rates starting from 8.4%", "Loan tenure up to 30 years", "Tax benefits on principal and interest", "Balance transfer facility available", "Top-up loans for home improvement"],
+                description: "Home loans help you finance the purchase, construction, or renovation of a residential property. They offer long repayment tenures and significant tax benefits.",
+                banks: [{
+                        name: "City Housing Finance",
+                        rate: "9.2%",
+                        fee: "0.75%",
+                        rating: "4.1/5"
+                    },
+                    {
+                        name: "MegaCorp Bank",
+                        rate: "8.4%",
+                        fee: "1.0%",
+                        rating: "4.6/5",
+                        best: true
+                    },
+                    {
+                        name: "Local Co-op Credit",
+                        rate: "8.7%",
+                        fee: "0.5%",
+                        rating: "4.0/5"
+                    }
+                ]
+            },
+            personal: {
+                title: "Personal Loan",
+                features: ["Quick disbursal within 24 hours", "No collateral required", "Flexible repayment options", "Loan amounts from ₹50,000 to ₹40 lakh", "Minimal documentation"],
+                description: "Personal loans are unsecured loans that can be used for any personal need, such as weddings, medical emergencies, or travel. They are characterized by speedy approval and a lack of collateral.",
+                banks: [{
+                        name: "Digital Wallet Finance",
+                        rate: "12.5%",
+                        fee: "2.5%",
+                        rating: "4.3/5"
+                    },
+                    {
+                        name: "Secure Credit Union",
+                        rate: "11.9%",
+                        fee: "3.0%",
+                        rating: "4.5/5"
+                    },
+                    {
+                        name: "Express Loan Agency",
+                        rate: "13.0%",
+                        fee: "2.0%",
+                        rating: "4.0/5",
+                        best: true
+                    }
+                ]
+            },
+            car: {
+                title: "Car Loan",
+                features: ["Financing up to 100% of the ex-showroom price", "Repayment tenure up to 7 years", "Attractive interest rates for new and pre-owned cars", "Quick and easy processing", "Car acts as collateral"],
+                description: "Car loans help you purchase a new or used vehicle. They are secured loans, meaning the car itself acts as collateral, often leading to better interest rates.",
+                banks: [{
+                        name: "AutoFinance India",
+                        rate: "7.8%",
+                        fee: "1.0%",
+                        rating: "4.4/5",
+                        best: true
+                    },
+                    {
+                        name: "DriveSafe Loans",
+                        rate: "8.1%",
+                        fee: "0.75%",
+                        rating: "4.1/5"
+                    },
+                    {
+                        name: "Speedy Motors Bank",
+                        rate: "8.5%",
+                        fee: "1.2%",
+                        rating: "3.9/5"
+                    }
+                ]
+            }
+        };
+
+        const loanDetailsModal = document.getElementById('loanDetailsModal');
+        const applyLoanBtn = document.getElementById('applyLoanBtn');
+        const agentContactModal = document.getElementById('agentContactModal');
+        const contactForm = document.getElementById('contactForm');
+        let currentLoanTitle = ""; // To store the loan title for the contact modal
+
+        // --- Helper Functions ---
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'flex';
+            const firstFocusable = modal.querySelector('input, button, a');
+            if (firstFocusable) {
+                firstFocusable.focus();
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'success' ? 'var(--primary)' : 'var(--warning)';
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        function populateBankComparison(banks) {
+            const body = document.getElementById('bankComparisonBody');
+            body.innerHTML = '';
+
+            banks.forEach(bank => {
+                const row = document.createElement('tr');
+                let rateClass = '';
+                let feeClass = '';
+
+                // Simple logic: assume the bank marked 'best' has the best rate/fee combination for demo purposes
+                // In a real app, this would require complex calculation. Here we mark the lowest fee/rate visually.
+
+                // Find the lowest rate and fee in the array
+                const lowestRate = Math.min(...banks.map(b => parseFloat(b.rate.replace('%', ''))));
+                const lowestFee = Math.min(...banks.map(b => parseFloat(b.fee.replace('%', ''))));
+
+                if (parseFloat(bank.rate.replace('%', '')) === lowestRate) {
+                    rateClass = 'best-rate';
+                }
+                if (parseFloat(bank.fee.replace('%', '')) === lowestFee) {
+                    feeClass = 'least-fee';
+                }
+
+                row.innerHTML = `
+                    <td>${bank.name}</td>
+                    <td class="${rateClass}">${bank.rate}</td>
+                    <td class="${feeClass}">${bank.fee}</td>
+                    <td>${bank.rating}</td>
+                `;
+                body.appendChild(row);
+            });
+        }
+
+
+        // --- Event Listeners and Logic ---
+
+        // Authentication logic (omitted for brevity, copied from previous step)
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const modalCloses = document.querySelectorAll('.close-modal');
+        const showRegisterLink = document.getElementById('showRegister');
+        const showLoginLink = document.getElementById('showLogin');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+
+        loginBtn.addEventListener('click', () => openModal('loginModal'));
+        registerBtn.addEventListener('click', () => openModal('registerModal'));
+        getStartedBtn.addEventListener('click', () => openModal('registerModal'));
+        modalCloses.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const modal = e.target.closest('.modal');
+                if (modal) {
+                    closeModal(modal.id);
+                }
+            });
+        });
+        document.getElementById('showRegister').addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal('loginModal');
+            openModal('registerModal');
+        });
+        document.getElementById('showLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal('registerModal');
+            openModal('loginModal');
+        });
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            hideUserInfo();
+            showNotification('You have been logged out.', 'success');
+        });
+
+        function showUserInfo(user) {
+            document.getElementById('authButtons').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'flex';
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+        }
+
+        function hideUserInfo() {
+            document.getElementById('authButtons').style.display = 'flex';
+            document.getElementById('userInfo').style.display = 'none';
+        }
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            if (email) {
+                const username = email.substring(0, email.indexOf('@'));
+                showUserInfo({
+                    name: username
+                });
+                closeModal('loginModal');
+                showNotification(`Welcome back, ${username}!`, 'success');
+            } else {
+                showNotification('Please enter a valid email.', 'warning');
+            }
+        });
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showNotification('Passwords do not match.', 'warning');
+                return;
+            }
+            if (name && password) {
+                showUserInfo({
+                    name: name
+                });
+                closeModal('registerModal');
+                showNotification(`Registration successful! Welcome, ${name}!`, 'success');
+            }
+        });
+
+
+        // Loan Calculator & Comparison Logic
+        const calculateBtn = document.getElementById('calculateBtn');
+        const compareBtn = document.getElementById('compareBtn');
+        const originalCostAlert = document.getElementById('originalCostAlert');
+        const refinanceSavingsAlert = document.getElementById('refinanceSavingsAlert');
+
+        function updateResults() {
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const interestRate = parseFloat(document.getElementById('interestRate').value);
+            const loanTerm = parseInt(document.getElementById('loanTerm').value);
+            const refinanceAmount = parseFloat(document.getElementById('refinanceAmount').value);
+            const refinanceRate = parseFloat(document.getElementById('refinanceRate').value);
+            const refinanceTerm = parseInt(document.getElementById('refinanceTerm').value);
+
+            if (isNaN(loanAmount) || loanAmount <= 0) {
+                showNotification("Please enter a valid Loan Amount.", 'warning');
+                return;
+            }
+            if (isNaN(interestRate) || interestRate < 0) {
+                showNotification("Please enter a valid Interest Rate (0 or positive).", 'warning');
+                return;
+            }
+            if (isNaN(loanTerm) || loanTerm <= 0) {
+                showNotification("Please enter a valid positive Loan Term.", 'warning');
+                return;
+            }
+            if (isNaN(refinanceAmount) || refinanceAmount <= 0) {
+                showNotification("Please enter a valid Refinance Amount.", 'warning');
+                return;
+            }
+            if (isNaN(refinanceRate) || refinanceRate < 0) {
+                showNotification("Please enter a valid Refinance Rate (0 or positive).", 'warning');
+                return;
+            }
+            if (isNaN(refinanceTerm) || refinanceTerm <= 0) {
+                showNotification("Please enter a valid Refinance Term.", 'warning');
+                return;
+            }
+
+
+            const currentOriginalResults = calculateLoan(loanAmount, interestRate, loanTerm);
+            const currentRefinanceResults = calculateLoan(refinanceAmount, refinanceRate, refinanceTerm);
+
+            // Update result cards
+            document.getElementById('originalMonthlyPayment').textContent = currencyFormatter.format(currentOriginalResults.monthlyPayment).replace('₹', '₹');
+            document.getElementById('refinanceMonthlyPayment').textContent = currencyFormatter.format(currentRefinanceResults.monthlyPayment).replace('₹', '₹');
+            document.getElementById('originalTotalInterest').textContent = currencyFormatter.format(currentOriginalResults.totalInterest).replace('₹', '₹');
+            document.getElementById('refinanceTotalInterest').textContent = currencyFormatter.format(currentRefinanceResults.totalInterest).replace('₹', '₹');
+
+            // Update Alerts
+            const originalTotal = parseFloat(currentOriginalResults.totalPayment);
+            const refinanceTotal = parseFloat(currentRefinanceResults.totalPayment);
+            const originalInterest = parseFloat(currentOriginalResults.totalInterest);
+
+            originalCostAlert.textContent = `Total Interest: ${currencyFormatter.format(originalInterest).replace('₹', '₹')}`;
+
+            if (refinanceTotal < originalTotal) {
+                const savings = originalTotal - refinanceTotal;
+                refinanceSavingsAlert.className = 'alert-box green';
+                refinanceSavingsAlert.textContent = `You save: ${currencyFormatter.format(savings).replace('₹', '₹')} in total!`;
+                showNotification(`Great News! Refinancing saves you ${currencyFormatter.format(savings).replace('₹', '₹')}!`, 'success');
+            } else if (originalTotal < refinanceTotal) {
+                const extraCost = refinanceTotal - originalTotal;
+                refinanceSavingsAlert.className = 'alert-box red';
+                refinanceSavingsAlert.textContent = `Extra Cost: ${currencyFormatter.format(extraCost).replace('₹', '₹')} (Refinancing is more expensive)`;
+                showNotification(`Warning! Refinancing costs ${currencyFormatter.format(extraCost).replace('₹', '₹')} more.`, 'warning');
+            } else {
+                refinanceSavingsAlert.className = 'alert-box primary';
+                refinanceSavingsAlert.textContent = `Costs are roughly the same. Check the EMI for difference.`;
+                showNotification("The two loan scenarios have roughly the same total cost.", 'success');
+            }
+
+            // Update charts and tables
+            updateCharts({
+                amount: loanAmount,
+                totalInterest: originalInterest
+            }, {
+                amount: refinanceAmount,
+                totalInterest: parseFloat(currentRefinanceResults.totalInterest)
+            });
+
+            populateSchedule('originalSchedule', currentOriginalResults.schedule);
+            populateSchedule('refinanceSchedule', currentRefinanceResults.schedule);
+        }
+
+        calculateBtn.addEventListener('click', updateResults);
+        compareBtn.addEventListener('click', updateResults);
+
+        // Tabs functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(`${tab.dataset.tab}Content`).classList.add('active');
+            });
+        });
+
+        // Loan Details Modals, Bank Comparison, and Apply Loan Feature
+        document.querySelectorAll('.learn-more-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const loanKey = e.currentTarget.dataset.loan;
+                const details = loanDetails[loanKey];
+
+                if (details) {
+                    currentLoanTitle = details.title; // Set current loan title
+                    document.getElementById('loanDetailsTitle').textContent = details.title;
+                    const contentDiv = document.getElementById('loanDetailsContent');
+                    contentDiv.innerHTML = `
+                        <div>
+                            <p>${details.description}</p>
+                        </div>
+                        <div>
+                            <h3>Key Features</h3>
+                            ${details.features.map(feature => `
+                                <div class="loan-feature">
+                                    <i class="fas fa-check-circle" aria-hidden="true"></i>
+                                    <span>${feature}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    document.getElementById('applyLoanBtn').textContent = `Apply for ${details.title}`;
+                    populateBankComparison(details.banks); // Populate the new bank comparison table
+                    openModal('loanDetailsModal');
+                }
+            });
+        });
+
+        applyLoanBtn.addEventListener('click', () => {
+            closeModal('loanDetailsModal');
+            document.getElementById('contactLoanType').textContent = currentLoanTitle;
+            openModal('agentContactModal');
+        });
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value;
+            const phone = document.getElementById('contactPhone').value;
+            const loan = document.getElementById('contactLoanType').textContent;
+
+            // Mock submission and agent contact notification
+            closeModal('agentContactModal');
+            showNotification(`Thank you, ${name}! An agent will call you at ${phone} shortly to discuss your ${loan} application.`, 'primary');
+            contactForm.reset();
+        });
+
+
+        // Chatbot functionality
+        document.getElementById('chatbotToggle').addEventListener('click', () => {
+            const isVisible = document.getElementById('chatbotWindow').style.display === 'flex';
+            document.getElementById('chatbotWindow').style.display = isVisible ? 'none' : 'flex';
+        });
+
+        document.getElementById('closeChatbot').addEventListener('click', () => {
+            document.getElementById('chatbotWindow').style.display = 'none';
+        });
+
+        document.getElementById('sendMessage').addEventListener('click', handleChatbotMessage);
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleChatbotMessage();
+            }
+        });
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+            messageDiv.innerHTML = text;
+            document.getElementById('chatbotMessages').appendChild(messageDiv);
+            document.getElementById('chatbotMessages').scrollTop = document.getElementById('chatbotMessages').scrollHeight;
+        }
+
+        function handleChatbotMessage() {
+            const message = document.getElementById('chatInput').value.trim();
+            if (message === "") return;
+
+            addMessage(message, true);
+            document.getElementById('chatInput').value = '';
+
+            const lowerCaseMessage = message.toLowerCase();
+            let botResponse;
+
+            if (lowerCaseMessage.includes('emi') || lowerCaseMessage.includes('monthly payment') || lowerCaseMessage.includes('calculate')) {
+                botResponse = "The **Equated Monthly Installment (EMI)** is calculated using the formula. For instant results, please use the **Loan Calculator** section above!";
+            } else if (lowerCaseMessage.includes('refinance') || lowerCaseMessage.includes('compare')) {
+                botResponse = "Refinancing replaces your old loan for a better rate. Our tool provides a side-by-side comparison. Look for the **green saving alert** for best results!";
+            } else if (lowerCaseMessage.includes('interest rate') || lowerCaseMessage.includes('interest')) {
+                botResponse = "Interest is the cost of borrowing. We use the **amortization schedule** below the charts to show you exactly how your payment is split between principal and interest each month.";
+            } else if (lowerCaseMessage.includes('loan type') || lowerCaseMessage.includes('types') || lowerCaseMessage.includes('available loans')) {
+                botResponse = "We offer **Education**, **Home**, **Personal**, and **Car** loans. Scroll down to the **'Which Loan is Best for You?'** section and click **'Learn More'** for detailed bank comparisons!";
+            } else if (lowerCaseMessage.includes('bank') || lowerCaseMessage.includes('which bank is best')) {
+                botResponse = "We provide mock comparisons with top banks for each loan type. Click **'Learn More'** on any loan type (e.g., Home Loan) to see interest rates and processing fees from different providers.";
+            } else if (lowerCaseMessage.includes('apply') || lowerCaseMessage.includes('how to apply') || lowerCaseMessage.includes('agent')) {
+                botResponse = "To apply, click **'Learn More'** on your desired loan, review the bank offers, and click **'Apply for this Loan'**. We'll get your details and have a **Loan Agent** call you directly for the next steps.";
+            } else if (lowerCaseMessage.includes('success') || lowerCaseMessage.includes('people take loan')) {
+                botResponse = "You can view our **Community Success Metrics** just below the calculator! We proudly show that **8,900+ loans** have been successfully cleared by our users, with a low **5% default rate**.";
+            } else if (lowerCaseMessage.includes('hello') || lowerCaseMessage.includes('hi')) {
+                botResponse = "Hello! I'm your Loan Assistant. I specialize in helping you understand loan terms and navigate the GamePlan website.";
+            } else {
+                botResponse = "I couldn't find a specific answer. Try asking about **'EMI calculation'**, **'refinancing'**, **'loan types'**, or **'bank comparison'**.";
+            }
+
+            setTimeout(() => addMessage(botResponse, false), 1000);
+        }
+
+        // Reminder Functionality (MOCK)
+        document.querySelectorAll('.set-reminder-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const loanName = e.currentTarget.dataset.loan;
+                const loanAmount = e.currentTarget.dataset.amount;
+                showNotification(`Reminder successfully set for your ${loanName} payment of ₹${loanAmount}. We'll notify you on the due date!`, 'primary');
+            });
+        });
+
+        // Run initial calculation and chart drawing on load
+        updateResults();
+    </script>
+</body>
+
+</html>
